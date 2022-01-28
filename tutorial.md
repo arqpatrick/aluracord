@@ -344,7 +344,7 @@ A grande *jogada* do React é a utilização de `components` e `state`. Quando c
 >
 - Como **avisar** o React?
 
--[x] Declarar uma variável
+- [x] Declarar uma variável
 
 
 
