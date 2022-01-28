@@ -343,9 +343,174 @@ A grande *jogada* do React é a utilização de `components` e `state`. Quando c
 > Então, precisamos *"avisar"* para o React, que esse Estado do `input` poderá sofrer alteração
 >
 - Como **avisar** o React?
+- [x] Declarar/Utilizar uma variável para utilizar a sua **variação**
 
-- [x] Declarar uma variável
+```js
+const username = 'arqpatrick';
+
+<input
+  type="text"
+  value={username}
+/>
+```
+Declarar a variável entre chaves `{variavel}`
+
+- [x] Criar um `onChange` para lidar com essa mudança dos dados digitados pelo usuário
+
+```js
+const username = 'arqpatrick';
+
+<input
+  type="text"
+  value={username}
+  onChange={ function handler() {
+    console.log('usuário digitou');
+  }}
+/>
+```
+Agora o React já está *"vendo"* a digitação do usuário, mas ainda não *"sabe"* como usar essa informação
+- [x] Criar um `event` (evento), para lidar com utilizar as mudanças
+
+```js
+const username = 'arqpatrick';
+
+<input
+  type="text"
+  value={username}
+  onChange={ function handler(event) {
+    console.log('usuário digitou', event.target.value);
+  }}
+/>
+```
+O React já `enxerga` o que é digitado, mas não consegue mudar ainda, precisa *desbloquear* o navegador
+- [x] Utilizar o `useState` do React
+```js
+const [username, setUsername] = React.useState('arqpatrick');
+
+<input
+  type="text"
+  value={username}
+  onChange={ function handler(event) {
+    console.log('usuário digitou', event.
+    target.value);
+    // Onde está o valor?
+    const valor = event.target.value;
+    // Trocar o valor da variável
+    setUsername(valor);
+  }}
+/>
+```
+Aqui o `setUsername` trabalha como uma **função**. Ele que avisa o React que uma alteração está acontecendo e por isso ele é o responsável por armazenar esse novo valor: `setUsername(valor)` recebe o valor adquirido pela `const valor` através do `event.target.value`, que é a entrada do teclado no `input` criado
+
+Agora podemos inserir esse sistema do React dentro do tag `TextField` que estava comentada anteriormente
+```js
+<TextField
+  fullWidth
+  value={username}
+  onChange={ function handler(event) {                  
+    const valor = event.target.value;
+    setUsername(valor);
+  }}
+  textFieldColors={{
+    neutral: {
+      textColor: appConfig.theme.colors.neutrals[200],
+      mainColor: appConfig.theme.colors.neutrals[900],
+      mainColorHighlight: appConfig.theme.colors.primary[500],
+      backgroundColor: appConfig.theme.colors.neutrals[800],
+    },
+  }}
+/>
+```
+## RECARREGAMENTO PARCIAL NO REACT ##
+Por padrão, a tag `form` de formulário, sempre executa um *refresh* quando o botão `submit` é executado.
+
+Nesse exemplo, a tag `Box` está sendo `as = form` um formulário `form`.
+
+Mas o React trabalha com desempenho, e para melhorar o desempenho, é melhor que as as funções, objetos, etc, sejam atualizados apenas na parte onde é necessário, não na página inteira. Para tanto, devemos controlar essa ação, e no `form` podemos usar o `onSubmit`, que funciona similar ao `onChange` utilizado anteriormente
+
+
+## CRIAR NOVA PÁGINA ##
 
 
 
+## ROUTER ##
+Utilizando o `router` do React, podemos fazer os links sem necessidade de recarregar a página inteira, melhorando a performance e a experiência do usuário
+```js
+import { useRouter } from 'next/router';
 
+const roteamento = useRouter();
+
+<input
+
+onSubmit={ function (infosDoEvento) {
+  infosDoEvento.preventDefault();
+  roteamento.push('/chat');
+}}
+
+/>
+```
+
+## _app.js ##
+No Next, criando uma página chamada `_app.js` dentro de `pages`, temos uma wrapper, que envolve todas as páginas automaticamente. Então tudo que estiver dentro dela será exibido em todas as páginas
+`>pages/_app.js`
+```js
+export default function MyApp({ Component, pageProps }) {
+    console.log('Roda em todas as páginas');
+    return <Component {...pageProps} />
+}
+```
+Então podemos colocar o recortar o `GlobalStyle` de dentro do `index.js` e colocá-lo dentro desse *wrapper*
+```js
+// GLOBALSTYLE CSS
+function GlobalStyle() {
+    return (
+      <style global jsx>{`
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          list-style: none;
+        }
+        body {
+          font-family: 'Open Sans', sans-serif;
+        }
+        /* App fit Height */ 
+        html, body, #__next {
+          min-height: 100vh;
+          display: flex;
+          flex: 1;
+        }
+        #__next {
+          flex: 1;
+        }
+        #__next > * {
+          flex: 1;
+        }
+        /* ./App fit Height */ 
+      `}</style>
+    );
+  }
+
+export default function CustomApp({ Component, pageProps }) {
+    return (
+        <>
+            <GlobalStyle />
+            <Component {...pageProps} />
+        </>
+    )
+}
+```
+
+## HOOKS ##
+
+- useState
+- useRouter
+
+# LINKS #
+
+### **NextJS** ###
+https://nextjs.org/docs/getting-started
+### **Styled JSX** ###
+https://github.com/vercel/styled-jsx
+### **Custom `App`** ###
+https://nextjs.org/docs/advanced-features/custom-app
