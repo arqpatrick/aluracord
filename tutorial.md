@@ -298,7 +298,7 @@ Criar na raiz `config.json` com o seguinte conteúdo:
 ```
 - Importar para dentro do `index.js`
 ```
-import appConfig from '.'
+import appConfig from '../config.json';
 ```
 
 ## SkyNexUI ##
@@ -308,5 +308,44 @@ yarn add @skynexui/components
 
 `index.js`
 ```
-import
+import { Box, Button, Text, TextField, Image } from '@skynexui/components';
 ```
+
+## Github ##
+
+## Publicar na Vercel ##
+
+## Obter o usuário dinamicamente ##
+Neste código, temos um campo `TextField` que funciona como um input, mas de forma já estilizada.
+Comentando o `TextField` e criando um `input`, a funcionalidade é a mesma:
+```html
+<input
+  type="text"
+  value="arqpatrick"
+/>
+{/* <TextField
+  fullWidth
+  textFieldColors={{
+    neutral: {
+      textColor: appConfig.theme.colors.neutrals[200],
+      mainColor: appConfig.theme.colors.neutrals[900],
+      mainColorHighlight: appConfig.theme.colors.primary[500],
+      backgroundColor: appConfig.theme.colors.neutrals[800],
+    },
+  }}
+/> */}
+```
+> Há um problema nesse código! A utilização de um `value` *fixo*, como `value="arqpatrick"` faz com que *quebre* o **React!!!**
+>
+### **ESTADO - STATE** ###
+A grande *jogada* do React é a utilização de `components` e `state`. Quando colocamos um valor *fixo*, o React percebe que um `input`, pode receber uma **mudança** de **estado**.
+É como se a cada mudança *(digitação, menu, ação, etc)* de estado, o React *"Tirasse uma foto"* daquele estado.
+> Então, precisamos *"avisar"* para o React, que esse Estado do `input` poderá sofrer alteração
+>
+- Como **avisar** o React?
+
+-[x] Declarar uma variável
+
+
+
+
